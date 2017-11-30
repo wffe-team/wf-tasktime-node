@@ -2,6 +2,7 @@
 
 import WorklogModel from '../../models/worklog/worklog';
 import BaseComponent from '../../prototype/baseComponent';
+import formidable from 'formidable'
 
 class Worklog extends BaseComponent {
 	constructor(){

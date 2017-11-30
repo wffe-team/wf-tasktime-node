@@ -2,6 +2,7 @@
 
 import DepartmentModel from '../../models/department/department';
 import BaseComponent from '../../prototype/baseComponent';
+import formidable from 'formidable'
 
 class Department extends BaseComponent {
 	constructor(){
@@ -104,8 +105,10 @@ class Department extends BaseComponent {
 			let projectFirstNameList=[];
 			let projectSecondNameList=[];
 			let query={}; 
+			let num=0;
 
 			departmentNameList = await DepartmentModel.distinct('departmentName');
+
 			departmentNameList.forEach(item=>{
     			departmentList.push({
     				departmentName:item,
@@ -127,13 +130,6 @@ class Department extends BaseComponent {
         			})
         		});
         		item.childProjects.forEach(async items=>{
-	    			models.projectInfos.distinct('projectSecondName',{
-				    	departmentName:item.departmentName,
-				    	projectFirstName:items.projectFirstName,
-				    	projectSecondName:{
-				    		$ne:''
-				    	}
-				    })
 				    query={
 				    	departmentName:item.departmentName,
 				    	projectFirstName:items.projectFirstName,
@@ -147,12 +143,30 @@ class Department extends BaseComponent {
 	        				projectSecondName:itemss,
 	        			})
 				    });
+				    num++;
 			    })
     		});
-			res.send({
-				status: 1,
-				data: departmentList,
-			})
+    		let test=(()=>{
+		    	let count=-1;
+		    	let mark=true;
+		    	return ()=>{
+		    		if(num==count&&mark){
+		    			mark=false;
+		    			res.send({
+							status: 1,
+							data: departmentList,
+						})
+		    		}else{
+		    			count=num;
+		    			setTimeout(()=>{
+		    				test();
+		    			},30);
+		    		}
+		    	}
+		    })();
+			setTimeout(()=>{
+				test()
+			},30);
 		}catch(err){
 			res.send({
 				status: 0,

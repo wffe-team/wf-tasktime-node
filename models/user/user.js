@@ -1,6 +1,7 @@
 'use strict';
 
 import mongoose from 'mongoose'
+import userData from '../../initdata/user'
 
 const Schema = mongoose.Schema;
 
@@ -9,11 +10,18 @@ const userSchema = new mongoose.Schema({
 	account : String,
 	password : String,
 	realName : String,
-	time : Number,
 	projectIds : String
 });
 //projectSchema.index({projectId: 1});
 
 const UserModel = mongoose.model('users', userSchema);
+
+UserModel.findOne((err,data)=>{
+	if(!data){
+		userData.forEach(item=>{
+			UserModel.create(item);
+		});
+	}
+})
 
 export default UserModel
