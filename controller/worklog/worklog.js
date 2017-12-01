@@ -14,6 +14,11 @@ class Worklog extends BaseComponent {
 		form.parse(req, async (err, fields, files) => {
 			console.log(fields);
 			try{
+				await WorklogModel.remove({
+			        memberId : fields.memberId,
+			        projectInfo : fields.projectInfo,
+			        dateRange : fields.dateRange,
+			    });
 			    const newWorkLog = new WorklogModel({
 			        member : fields.member,
 			        memberId : fields.memberId,
@@ -43,6 +48,31 @@ class Worklog extends BaseComponent {
 				query.dateRange=req.query.time;
 			}
 			const workLogList = await WorklogModel.find(query);
+
+		 // 	let check = (arr,item)=>{
+		 // 		let i = 0;
+		 // 		let len = arr.length;
+		 // 		for(i;i<len;i++){
+		 // 			if(arr[i].memberId==item.memberId){
+		 // 				return i;
+		 // 			}
+		 // 		}
+		 // 		return -1;
+		 // 	}
+		 // 	let workLogHashList = [];
+			// workLogList.forEach(item=>{
+			// 	let index=check(workLogHashList,item);
+			// 	if(index!=-1){
+			// 		workLogHashList[index].projectInfoList.push({
+			// 			projectInfo:item.projectInfo,
+			// 			workDays:item.workDays,
+			// 		})
+			// 	}else{
+			// 		workLogHashList.push(item);
+			// 		workLogHashList[workLogHashList.length-1].projectInfoList=[];
+			// 	}
+			// });
+
 			res.send({
 				status: 1,
 				data: workLogList,
