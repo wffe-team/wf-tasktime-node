@@ -26,6 +26,7 @@ class Worklog extends BaseComponent {
 			        dateRange : fields.dateRange,
 			        workDays : fields.workDays,
 			        type : fields.type,
+			        remarks : fields.remarks,
 			    });
 				await WorklogModel.create(newWorkLog)
 				res.send({

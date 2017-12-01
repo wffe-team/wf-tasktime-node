@@ -12,7 +12,8 @@ const workLogSchema = new mongoose.Schema(
         projectInfo: String,
         dateRange: '',
         workDays: Number,
-        type:String       
+        type: String,
+        remarks: String,
     }
 );
 //projectSchema.index({projectId: 1});
