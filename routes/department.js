@@ -9,5 +9,7 @@ router.get('/getDepartment', Department.getDepartment);
 router.get('/getProjectFirst', Department.getProjectFirst);
 router.get('/getProjectSecond', Department.getProjectSecond);
 router.get('/departmentRelationList', Department.departmentRelationList);
+router.get('/departmentProList', Department.departmentProList);
+router.delete('/deleteDepartment/:_id', Department.deleteDepartment);
 
 export default router

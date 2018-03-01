@@ -31,6 +31,23 @@ class Department extends BaseComponent {
 			}
 		});
 	}
+	async deleteDepartment(req,res,next){
+		const id = req.params._id;
+		try{
+			await DepartmentModel.remove({
+		        _id : id
+		    });
+			res.send({
+				status: 1,
+				data: '删除成功',
+			})
+		}catch(err){
+			res.send({
+				status: 0,
+				data: '删除失败'
+			})
+		}
+	}
 	async getDepartment(req,res,next){
 		try{
 			const departmentList = await DepartmentModel.distinct('departmentName');
@@ -90,6 +107,25 @@ class Department extends BaseComponent {
 			res.send({
 				status: 1,
 				data: departmentList,
+			})
+		}catch(err){
+			res.send({
+				status: 0,
+				data: '查询失败'
+			})
+		}
+	}
+	async departmentProList(req,res,next){
+		const offset = parseInt((req.query.currentPage-1)*req.query.pageSize);
+		const limit = parseInt(req.query.pageSize);
+		console.log(offset,limit);
+		try{
+			const departmentProject = await DepartmentModel.find({}).skip(offset).limit(limit);
+			const total = await DepartmentModel.find({}).count();
+			res.send({
+				status: 1,
+				total: total,
+				data: departmentProject,
 			})
 		}catch(err){
 			res.send({
